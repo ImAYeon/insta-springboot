@@ -1,0 +1,13 @@
+server:
+  port : 8000
+spring :
+  devtools :
+    livereload :
+      enabled : true
+  datasource :
+    url : jdbc:mysql://localhost:3306/insta?serverTimezone=UTC&characterEncoding=UTF-8
+    username : root
+    password : 1234
+
+mybatis:
+  config-location: classpath:config/myBatis.xml
