@@ -5,7 +5,10 @@ import com.posco.insta.config.SecurityService;
 import com.posco.insta.user.model.UserDto;
 import com.posco.insta.user.service.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -39,8 +42,10 @@ public class UserController {
     }
 
     @PostMapping("/")
-    public Integer postUser(@RequestBody UserDto userDto){
-        return userService.insertUser(userDto);
+    public ResponseEntity<?> postUser(@RequestBody UserDto userDto){
+        HttpStatus httpStatus = userService.insertUser(userDto)==1
+                ? HttpStatus.CREATED : HttpStatus.BAD_REQUEST;
+        return new ResponseEntity<>(httpStatus);
     }
 
     @DeleteMapping("/")

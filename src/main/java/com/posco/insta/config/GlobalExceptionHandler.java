@@ -1,5 +1,6 @@
 package com.posco.insta.config;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,5 +18,21 @@ public class GlobalExceptionHandler {
         Map<String, Object> map = new HashMap<>();
         map.put("errMsg", e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map); // BAD_REQUEST : 400
+    }
+
+    @ExceptionHandler(value = ExpiredJwtException.class)
+    public ResponseEntity<Map<String, Object>> expiredJwtException
+            (ExpiredJwtException e){
+        Map<String, Object> map = new HashMap<>();
+        map.put("errMsg", "토큰 문제있음");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(map); // UNAUTHORIZED : 401
+    }
+
+    @ExceptionHandler(value = Exception.class)
+    public ResponseEntity<Map<String, Object>> exception
+            (Exception e){
+        Map<String, Object> map = new HashMap<>();
+        map.put("errMsg", e.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(map); //
     }
 }
