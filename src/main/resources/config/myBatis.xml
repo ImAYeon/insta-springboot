@@ -6,8 +6,10 @@
 <configuration>
     <typeAliases>
         <package name="com.posco.insta.user.model" />
+        <package name="com.posco.insta.post.model" />
     </typeAliases>
     <mappers>
         <mapper resource="mapper/userMapper.xml"></mapper>
+        <mapper resource="mapper/postMapper.xml"></mapper>
     </mappers>
 </configuration>
