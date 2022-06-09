@@ -3,6 +3,8 @@ package com.posco.insta.config;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.spec.SecretKeySpec;
@@ -11,9 +13,16 @@ import java.security.Key;
 import java.util.Date;
 
 @Service
+@Slf4j
 public class SecurityService {
-    private static final String SECRET_KEY = "dlkfjlskdjflasdfasdfasdfasdfasdfasdfasdfjsdlkfj";
-    public String createToken(String subject, long expTime){
+    @Value("${jwt.secret_key}")
+    String SECRET_KEY;
+    @Value("${jwt.expTime}")
+    long expTime;
+    public String createToken(String subject){
+        log.info(SECRET_KEY);
+        log.info(""+expTime);
+
         if(expTime <= 0){
             throw new RuntimeException();
         }
@@ -30,7 +39,8 @@ public class SecurityService {
                 .compact();
     }
 
-    public String getSubject(String token){
+    public String getSubject(String tokenBearer){
+        String token = tokenBearer.substring("Bearer ".length());
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(DatatypeConverter.parseBase64Binary(SECRET_KEY))
                 .build()

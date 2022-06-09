@@ -17,16 +17,16 @@ public class SecurityAspect {
     @Autowired
     SecurityService securityService;
 
-    @Before("@annotation(tokenRequired)")
+    @Before("@annotation(tokenRequired)") // 어노테이션 실행 전에 그냥 검사만 하는 거
     public void authenticationWithToken(TokenRequired tokenRequired)
             throws IllegalAccessException{
         ServletRequestAttributes requestAttributes =
                 (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpServletRequest request = requestAttributes.getRequest();
 
-        String token = request.getHeader("token");
-        if(token.isEmpty()) throw new IllegalAccessException("token isNull");
-        if(securityService.getSubject(token) == null) throw new IllegalAccessException("bad token");
+        String tokenBearer = request.getHeader("Authorization");
+        if(tokenBearer.isEmpty()) throw new IllegalAccessException("token isNull");
+        if(securityService.getSubject(tokenBearer) == null) throw new IllegalAccessException("bad token");
 
     }
 }

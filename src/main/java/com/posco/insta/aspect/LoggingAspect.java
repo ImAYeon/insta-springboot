@@ -25,14 +25,14 @@ public class LoggingAspect {
 //        log.info("----------after---------");
 //    }
 
-    @Around("execution(* com.posco.insta.user.service.*.find*(..))")
+    @Around("execution(* com.posco.insta.user.controller.*.*(..))")
     public Object loggerAround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         long beforeTimeMillis = System.currentTimeMillis();
         log.info("start : " + beforeTimeMillis);
 
         Object result = proceedingJoinPoint.proceed(); // 이거 전후로 나눠지는 거
         long afterTimeMillis = System.currentTimeMillis();
-        log.info("before : " + afterTimeMillis +
+        log.info("after : " + afterTimeMillis +
                 ", 시간차 : " +  (afterTimeMillis - beforeTimeMillis));
         return result;
     }
