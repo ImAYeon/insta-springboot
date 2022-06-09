@@ -6,8 +6,11 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.crypto.spec.SecretKeySpec;
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
 import java.util.Date;
@@ -49,5 +52,16 @@ public class SecurityService {
         return claims.getSubject();
     }
 
+    public Integer getIdByToken(){
+        ServletRequestAttributes requestAttributes =
+                (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpServletRequest request = requestAttributes.getRequest();
+
+        String tokenBearer = request.getHeader("Authorization");
+
+        // 토큰에서 id값 빼오는 거
+        String id = getSubject(tokenBearer);
+        return Integer.parseInt(id);
+    }
 
 }

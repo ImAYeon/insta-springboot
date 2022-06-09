@@ -4,6 +4,7 @@ import com.posco.insta.aspect.TokenRequired;
 import com.posco.insta.config.SecurityService;
 import com.posco.insta.user.model.UserDto;
 import com.posco.insta.user.service.UserServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,36 +52,20 @@ public class UserController {
     @DeleteMapping("/")
     @TokenRequired
     public Integer deleteUserById(){
-        ServletRequestAttributes requestAttributes =
-                (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        HttpServletRequest request = requestAttributes.getRequest();
-
-        String tokenBearer = request.getHeader("Authorization");
-
-        // 토큰에서 id값 빼오는 거
-        String id = securityService.getSubject(tokenBearer);
-
-        return userService.deleteUserById(Integer.valueOf(id));
+        return userService.deleteUserById(securityService.getIdByToken());
     }
 
     @PutMapping("/")
     @TokenRequired
+    @Operation(description = "정보 업데이트")
     public Integer updateUserById(@RequestBody UserDto userDto){
-        ServletRequestAttributes requestAttributes =
-                (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        HttpServletRequest request = requestAttributes.getRequest();
-
-        String tokenBearer = request.getHeader("Authorization");
-
-        // 토큰에서 id값 빼오는 거
-        String id = securityService.getSubject(tokenBearer);
-
-        userDto.setId(Integer.valueOf(id));
+        userDto.setId(securityService.getIdByToken());
         return userService.updateUserById(userDto);
     }
 
 
     @PostMapping("/login")
+    @Operation(description = "로그인")
     public Map loginUser(@RequestBody UserDto userDto){
         UserDto loginUser = userService.serviceLogin(userDto);
         String token = securityService.createToken(
@@ -111,18 +96,15 @@ public class UserController {
     @TokenRequired
     public UserDto getUserByMe(){
         log.info("cont");
-        // header에서 빼오는 거
-        ServletRequestAttributes requestAttributes =
-                (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        HttpServletRequest request = requestAttributes.getRequest();
-
-        String tokenBearer = request.getHeader("Authorization");
-
-        // 토큰에서 id값 빼오는 거
-        String id = securityService.getSubject(tokenBearer);
 
         UserDto userDto = new UserDto();
-        userDto.setId(Integer.valueOf(id));
+        userDto.setId(securityService.getIdByToken());
         return userService.findUserById(userDto);
+    }
+
+    @TokenRequired
+    @GetMapping("/check")
+    public Boolean check(){
+        return true;
     }
 }
