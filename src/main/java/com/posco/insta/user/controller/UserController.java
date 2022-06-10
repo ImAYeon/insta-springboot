@@ -52,14 +52,14 @@ public class UserController {
     @DeleteMapping("/")
     @TokenRequired
     public Integer deleteUserById(){
-        return userService.deleteUserById(securityService.getIdByToken());
+        return userService.deleteUserById(securityService.getIdAtToken());
     }
 
     @PutMapping("/")
     @TokenRequired
     @Operation(description = "정보 업데이트")
     public Integer updateUserById(@RequestBody UserDto userDto){
-        userDto.setId(securityService.getIdByToken());
+        userDto.setId(securityService.getIdAtToken());
         return userService.updateUserById(userDto);
     }
 
@@ -98,7 +98,7 @@ public class UserController {
         log.info("cont");
 
         UserDto userDto = new UserDto();
-        userDto.setId(securityService.getIdByToken());
+        userDto.setId(securityService.getIdAtToken());
         return userService.findUserById(userDto);
     }
 

@@ -11,14 +11,51 @@
             posts
     </select>
 
-    <select id="getPostMyPostById" resultType="PostDto">
+    <select id="findPostsByUserId" resultType="SelectPostJoinUserDto" parameterType="PostDto">
         SELECT
-            id, userId, img, content
+            p.id, p.userId, p.img, p.content,
+            u.name as userName, u.img as userImg
         FROM
-            posts
-        WHERE userId = #{id}
+            posts as p
+        INNER JOIN
+            users as u
+        ON p.userId = u.id
+        WHERE p.userId = #{userId}
     </select>
 
+    <!--userId 까지 검사하는 이유는 토큰에 있는 id와 같아야 하기 때문-->
+    <delete id="deletePostByUserIdAndId" parameterType="PostDto">
+        delete from posts
+        where id = #{id} and userId=#{userId}
+    </delete>
+
+    <select id="findPostsByNotUserId" resultType="SelectPostJoinUserDto" parameterType="PostDto">
+        SELECT
+            p.id, p.userId, p.img, p.content,
+            u.name as userName, u.img as userImg
+        FROM
+            posts as p
+                INNER JOIN
+            users as u
+            ON p.userId = u.id
+        WHERE p.userId != #{userId}
+    </select>
+
+    <update id="updatePostByUserIdAndId" parameterType="PostDto">
+        UPDATE posts
+        <set>
+            <if test="img!=null">img = #{img},</if>
+            <if test="content!=null">content = #{content},</if>
+        </set>
+        WHERE id = #{id} AND userId = #{userId}
+    </update>
+
+    <insert id="postPost" parameterType="PostDto">
+        INSERT INTO
+            posts(userId, img, content)
+        VALUES
+            (#{userId}, #{img}, #{content})
+    </insert>
 
 
 

@@ -52,7 +52,7 @@ public class SecurityService {
         return claims.getSubject();
     }
 
-    public Integer getIdByToken(){
+    public Integer getIdAtToken(){
         ServletRequestAttributes requestAttributes =
                 (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpServletRequest request = requestAttributes.getRequest();

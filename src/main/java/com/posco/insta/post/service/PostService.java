@@ -1,10 +1,17 @@
 package com.posco.insta.post.service;
 
 import com.posco.insta.post.model.PostDto;
+import com.posco.insta.post.model.SelectPostJoinUserDto;
 
 import java.util.List;
 
 public interface PostService {
     List<PostDto> getPosts();
-    List<PostDto> getPostMyPostById(Integer id);
+    List<SelectPostJoinUserDto> getPostsByUserId(PostDto postDto);
+    Integer deletePostByUserIdAndId(PostDto postDto);
+    List<SelectPostJoinUserDto> getPostsByNotUserId(PostDto postDto);
+
+    Integer updateMyPost(PostDto postDto);
+
+    Integer postPost(PostDto postDto);
 }
