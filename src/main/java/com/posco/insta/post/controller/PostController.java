@@ -37,6 +37,12 @@ public class PostController {
         return postService.getPostsByUserId(postDto);
     }
 
+    @GetMapping("/{id}")
+    public SelectPostJoinUserDto getPostsById(@PathVariable String id){
+        postDto.setId(Integer.valueOf(id));
+        return postService.getPostById(postDto);
+    }
+
     @DeleteMapping("/{id}")
     public Integer deleteMyPost(@PathVariable String id){ //post의 id값 얻어오기
         postDto.setId(Integer.valueOf(id));
@@ -47,7 +53,7 @@ public class PostController {
     @GetMapping("/other")
     public List<SelectPostJoinUserDto> getOtherPosts(){
         postDto.setUserId(securityService.getIdAtToken());
-        return postService.getPostsByNotUserId(postDto);
+        return postService.findPostsByNotUserId(postDto);
     }
 
     @PutMapping("/{id}")

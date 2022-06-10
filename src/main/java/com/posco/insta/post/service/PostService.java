@@ -9,9 +9,11 @@ public interface PostService {
     List<PostDto> getPosts();
     List<SelectPostJoinUserDto> getPostsByUserId(PostDto postDto);
     Integer deletePostByUserIdAndId(PostDto postDto);
-    List<SelectPostJoinUserDto> getPostsByNotUserId(PostDto postDto);
+    List<SelectPostJoinUserDto> findPostsByNotUserId(PostDto postDto);
 
     Integer updateMyPost(PostDto postDto);
 
     Integer postPost(PostDto postDto);
+
+    SelectPostJoinUserDto getPostById(PostDto postDto);
 }

@@ -24,12 +24,17 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
+    public SelectPostJoinUserDto getPostById(PostDto postDto) {
+        return postMapper.getPostById(postDto);
+    }
+
+    @Override
     public Integer deletePostByUserIdAndId(PostDto postDto) {
         return postMapper.deletePostByUserIdAndId(postDto);
     }
 
     @Override
-    public List<SelectPostJoinUserDto> getPostsByNotUserId(PostDto postDto) {
+    public List<SelectPostJoinUserDto> findPostsByNotUserId(PostDto postDto) {
         return postMapper.findPostsByNotUserId(postDto);
     }
 
@@ -40,8 +45,10 @@ public class PostServiceImpl implements PostService{
 
     @Override
     public Integer postPost(PostDto postDto) {
-        return postMapper.postPost(postDto);
+        return postMapper.insertPost(postDto);
     }
+
+
 
 
 }

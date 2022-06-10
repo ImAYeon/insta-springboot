@@ -11,6 +11,19 @@
             posts
     </select>
 
+
+    <select id="getPostById" resultType="SelectPostJoinUserDto">
+        SELECT
+            p.id, p.userId, p.img, p.content,
+            u.name as userName, u.img as userImg
+        FROM posts as p
+        INNER JOIN user as u
+        ON u.id = p.userId
+        WHERE id = #{id}
+
+    </select>
+
+
     <select id="findPostsByUserId" resultType="SelectPostJoinUserDto" parameterType="PostDto">
         SELECT
             p.id, p.userId, p.img, p.content,
@@ -50,7 +63,7 @@
         WHERE id = #{id} AND userId = #{userId}
     </update>
 
-    <insert id="postPost" parameterType="PostDto">
+    <insert id="insertPost" parameterType="PostDto">
         INSERT INTO
             posts(userId, img, content)
         VALUES

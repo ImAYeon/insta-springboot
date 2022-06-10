@@ -11,11 +11,12 @@ public interface PostMapper {
     List<PostDto> getPosts();
     List<SelectPostJoinUserDto> findPostsByUserId(PostDto postDto);
     Integer deletePostByUserIdAndId(PostDto postDto);
-    Integer insertPostByUserId(PostDto postDto);
 
     List<SelectPostJoinUserDto> findPostsByNotUserId(PostDto postDto);
 
     Integer updatePostByUserIdAndId(PostDto postDto);
 
-    Integer postPost(PostDto postDto);
+    Integer insertPost(PostDto postDto);
+
+    SelectPostJoinUserDto getPostById(PostDto postDto);
 }
